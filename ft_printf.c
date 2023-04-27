@@ -75,7 +75,7 @@ int ft_printf(const char *format, ...)
 			if (format[c] == 'd')
 					ft_put_nbr((long long int)va_arg(param, int), 10,  &len);
 			if(format[c] == 'x')
-					ft_put_nbr((long long int)va_arg(param, int), 16, &len);
+					ft_put_nbr((long long int)va_arg(param, unsigned int), 16, &len);
 		}
 		else
 			len += write(1, &format[c], 1);
