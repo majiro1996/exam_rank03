@@ -28,60 +28,59 @@ out: Hexadecimal for 42 is 2a$*/
 #include <stdarg.h>
 #include <unistd.h>
 
-void ft_put_str(char *str, int *len)
+void	ft_put_str(char *str, int *len)
 {
-	int c;
+	int c = 0;
 
-	c = 0;
 	if (!str)
 		str = "(null)";
-	while (str[c])
+	while(str[c])
 	{
 		*len += write(1, &str[c], 1);
-		c++;
+		c++;;
 	}
 }
 
-void ft_put_nbr(long long int nbr, int base, int *len)
+void	ft_put_nbr(long long int nbr,int base, int *len)
 {
 	char *str = "0123456789abcdef";
-
 	if (nbr < 0)
 	{
 		nbr = nbr * -1;
-		*len += write(1, "-", 1);
+		*len += write (1, "-", 1);
 	}
-	if (nbr >= base)
+	if (nbr > base)
 		ft_put_nbr(nbr/base, base, len);
-	*len = write(1, &str[nbr % base], 1);
+	*len += write(1, &str[nbr % base], 1);
 }
 
 int ft_printf(const char *format, ...)
 {
-	va_list param;
-	int		len;
-	int 	c;
+	int len = 0;
+	int c = 0;
+	va_list ap;
 	
-	c = 0;
-	len = 0;
-	va_start(param, format);
+	va_start(ap, format);
 	while (format[c])
 	{
-		if (format[c] == '%' && (format[c + 1] == 's' || format[c + 1] == 'x' || format[c + 1] == 'd'))
+		if (format[c] == '%' && (format[c+1] == 's' || format[c+1] == 'd' || format[c+1] == 'x'))
 		{
 			c++;
 			if (format[c] == 's')
-					ft_put_str(va_arg(param, char *), &len);
+				ft_put_str(va_arg(ap, char *), &len);
 			if (format[c] == 'd')
-					ft_put_nbr((long long int)va_arg(param, int), 10,  &len);
-			if(format[c] == 'x')
-					ft_put_nbr((long long int)va_arg(param, unsigned int), 16, &len);
+				ft_put_nbr((long long int)va_arg(ap, int), 10, &len);
+			if (format[c] == 'x')
+				ft_put_nbr((long long int)va_arg(ap, unsigned int), 16, &len);
+			c++;
 		}
 		else
+		{
 			len += write(1, &format[c], 1);
-		c++;
+			c++;
+		}	
 	}
-	va_end(param);
+	va_end(ap);
 	return (len);
 }
 
@@ -89,5 +88,5 @@ int main(void)
 {
 	ft_printf("hola holita %s\n", "vecinito");
 	ft_printf("decimal %d\n", 42);
-	ft_printf("hexadecimal %x\n", 42);
+	ft_printf("hexadecimal %x\n", -42);
 }
