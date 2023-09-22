@@ -49,7 +49,7 @@ void	ft_put_nbr(long long int nbr,int base, int *len)
 		nbr = nbr * -1;
 		*len += write (1, "-", 1);
 	}
-	if (nbr > base)
+	if (nbr >= base)
 		ft_put_nbr(nbr/base, base, len);
 	*len += write(1, &str[nbr % base], 1);
 }
